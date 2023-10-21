@@ -52,7 +52,7 @@ cmds: ref(https://www.apollographql.com/blog/graphql/golang/using-graphql-with-g
   printf '// +build tools\npackage tools\nimport _ "github.com/99designs/gqlgen"' | gofmt > tools.go
   go mod tidy
   go run github.com/99designs/gqlgen init
-  //go run github.com/99designs/gqlgen generate (first define the schema and delete all in schema.resolvers.go)
+  go run github.com/99designs/gqlgen generate (first define the schema and delete all in schema.resolvers.go)
 
 should not modify either of those files(generated.go and model/models_gen.go) since they will be modified by gqlgen as you update your schema.
 
@@ -60,3 +60,21 @@ modify below files:
 schema.graphqls: a GraphQL schema file where types, queries, and mutations are defined. The schema file uses schema-definition-language (SDL) to describe data types
 and operations (queries/mutations) in a human-readable way.
 schema.resolvers.go: a go file with wrapper code for queries and mutations defined in schema.graphqls
+
+open the playground and run
+
+query{
+    todoByID(id:1){
+        ID,
+        Completed,
+        Title
+    }
+}
+
+mutation {
+    addTodoItem(title:"Reading"){
+        ID,
+        Title,
+        Completed
+    }
+}
