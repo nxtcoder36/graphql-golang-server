@@ -1,4 +1,4 @@
-server:
+1st way:
 
 https://graphql.org/code/  # get graphql dependencies from here
 
@@ -33,12 +33,30 @@ mutation {
     }
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
-client:
+2nd way:
 
 go get github.com/99designs/gqlgen
 gqlgen is a Go library for building GraphQL servers without any fuss.
+
+add gqlgen to your project’s tools.go
+printf '// +build tools\npackage tools\nimport _ "github.com/99designs/gqlgen"' | gofmt > tools.go
+go mod tidy
 
 create a .graphql file that defines your schema.
 
 go run github.com/99designs/gqlgen generate
 Use gqlgen to generate Go code based on your schema
+
+cmds: ref(https://www.apollographql.com/blog/graphql/golang/using-graphql-with-golang/)
+  go get github.com/99designs/gqlgen
+  printf '// +build tools\npackage tools\nimport _ "github.com/99designs/gqlgen"' | gofmt > tools.go
+  go mod tidy
+  go run github.com/99designs/gqlgen init
+  //go run github.com/99designs/gqlgen generate (first define the schema and delete all in schema.resolvers.go)
+
+should not modify either of those files(generated.go and model/models_gen.go) since they will be modified by gqlgen as you update your schema.
+
+modify below files:
+schema.graphqls: a GraphQL schema file where types, queries, and mutations are defined. The schema file uses schema-definition-language (SDL) to describe data types
+and operations (queries/mutations) in a human-readable way.
+schema.resolvers.go: a go file with wrapper code for queries and mutations defined in schema.graphqls
